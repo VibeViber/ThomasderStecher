@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abenteuer Atlas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(145deg, #8B4513, #A0522D, #CD853F);
+            min-height: 100vh;
+            color: #2F1B14;
+        }
+        
+        /* Willkommensseite */
+        .welcome-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(160, 82, 45, 0.3) 0%, transparent 50%),
+                linear-gradient(145deg, #8B4513, #A0522D, #CD853F);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="30" r="1" fill="%23F4E4BC" opacity="0.3"/><circle cx="80" cy="70" r="1.5" fill="%23F4E4BC" opacity="0.2"/><circle cx="60" cy="20" r="0.5" fill="%23F4E4BC" opacity="0.4"/><circle cx="30" cy="80" r="1" fill="%23F4E4BC" opacity="0.3"/></svg>') repeat;
+            pointer-events: none;
+        }
+        
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #F4E4BC;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #D2B48C;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+        
+        .map-card {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border: 3px solid #D2B48C;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(244, 228, 188, 0.1) 50%, transparent 70%);
+            transition: transform 0.6s ease;
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        
+        .map-card:hover::before {
+            transform: translateX(0) translateY(0) rotate(45deg);
+        }
+        
+        .map-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-color: #F4E4BC;
+        }
+        
+        .map-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .map-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #F4E4BC;
+            margin-bottom: 0.5rem;
+        }
+        
+        .map-description {
+            color: #D2B48C;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+        
+        /* Kartenansicht */
+        .map-view {
+            display: none;
+            min-height: 100vh;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(139, 69, 19, 0.3);
+        }
+        
+        .map-header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(to bottom, rgba(139, 69, 19, 0.9), transparent);
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            color: #F4E4BC;
+            border: 2px solid #D2B48C;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        .back-button:hover {
+            background: linear-gradient(145deg, #A0522D, #CD853F);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .map-title-large {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #F4E4BC;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-top: 2rem;
+        }
+        
+        .event-icon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #D2B48C, #F4E4BC);
+            border: 3px solid #8B4513;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        
+        .event-icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            background: linear-gradient(145deg, #F4E4BC, #FFF8DC);
+        }
+        
+        .event-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244, 228, 188, 0.3) 0%, transparent 70%);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        /* Modal für Bilder/Videos */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border: 3px solid #D2B48C;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .close {
+            color: #F4E4BC;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #FFF8DC;
+        }
+        
+        .modal img, .modal video {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .modal h3 {
+            font-family: 'Cinzel', serif;
+            color: #F4E4BC;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .modal p {
+            color: #D2B48C;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .maps-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .map-title-large {
+                font-size: 2rem;
+            }
+            
+            .back-button {
+                position: static;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Willkommensseite -->
+    <div id="welcome" class="welcome-page">
+        <h1 class="title">ABENTEUER ATLAS</h1>
+        <p class="subtitle">Entdecke die Welt durch vergessene Karten</p>
+        
+        <div class="maps-grid">
+            <div class="map-card" onclick="showMap('europa')">
+                <span class="map-icon">🏰</span>
+                <h3 class="map-title">Europa</h3>
+                <p class="map-description">Burgen, Schlösser und mittelalterliche Abenteuer</p>
+            </div>
+            
+            <div class="map-card" onclick="showMap('asien')">
+                <span class="map-icon">🏔️</span>
+                <h3 class="map-title">Asien</h3>
+                <p class="map-description">Mystische Tempel und hohe Gipfel</p>
+            </div>
+            
+            <div class="map-card" onclick="showMap('afrika')">
+                <span class="map-icon">🦁</span>
+                <h3 class="map-title">Afrika</h3>
+                <p class="map-description">Safari-Abenteuer und wilde Natur</p>
+            </div>
+            
+            <div class="map-card" onclick="showMap('amerika')">
+                <span class="map-icon">🌵</span>
+                <h3 class="map-title">Amerika</h3>
+                <p class="map-description">Canyons, Wüsten und unendliche Weiten</p>
+            </div>
+            
+            <div class="map-card" onclick="showMap('ozeanien')">
+                <span class="map-icon">🏝️</span>
+                <h3 class="map-title">Ozeanien</h3>
+                <p class="map-description">Tropische Inseln und Unterwasserwelten</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Europa Karte -->
+    <div id="europa" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23D2B48C\' width=\'1200\' height=\'800\'/><path fill=\'%23A0522D\' d=\'M100 200 Q300 150 500 200 T900 180 L1000 300 Q800 350 600 320 T200 340 Z\'/><path fill=\'%238B4513\' d=\'M200 400 Q400 380 600 400 T1000 420 L1100 600 Q900 650 700 620 T300 640 Z\'/></svg>');">
+        <div class="map-overlay"></div>
+        <div class="map-header">
+            <button class="back-button" onclick="showWelcome()">← Zurück</button>
+            <h2 class="map-title-large">EUROPA</h2>
+        </div>
+        
+        <div class="event-icon" style="top: 25%; left: 30%;" onclick="openModal('Neuschwanstein', 'Märchenschloss in Bayern', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Neuschwanstein+Schloss')">🏰</div>
+        <div class="event-icon" style="top: 40%; left: 50%;" onclick="openModal('Kolosseum', 'Römisches Amphitheater', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Kolosseum+Rom')">🏛️</div>
+        <div class="event-icon" style="top: 35%; left: 20%;" onclick="openModal('Tower Bridge', 'Londons berühmte Brücke', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Tower+Bridge')">🌉</div>
+    </div>
+    
+    <!-- Asien Karte -->
+    <div id="asien" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23DEB887\' width=\'1200\' height=\'800\'/><polygon fill=\'%23A0522D\' points=\'200,100 400,80 600,120 800,90 1000,110 1100,300 900,350 700,320 500,340 300,330\'/><polygon fill=\'%238B4513\' points=\'150,450 350,430 550,460 750,440 950,450 1050,650 850,680 650,660 450,670 250,665\'/></svg>');">
+        <div class="map-overlay"></div>
+        <div class="map-header">
+            <button class="back-button" onclick="showWelcome()">← Zurück</button>
+            <h2 class="map-title-large">ASIEN</h2>
+        </div>
+        
+        <div class="event-icon" style="top: 30%; left: 40%;" onclick="openModal('Mount Everest', 'Der höchste Berg der Welt', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Mount+Everest')">⛰️</div>
+        <div class="event-icon" style="top: 45%; left: 60%;" onclick="openModal('Angkor Wat', 'Tempelkomplex in Kambodscha', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Angkor+Wat')">🛕</div>
+        <div class="event-icon" style="top: 25%; left: 70%;" onclick="openModal('Große Mauer', 'Chinas monumentales Bauwerk', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Chinesische+Mauer')">🏯</div>
+    </div>
+    
+    <!-- Afrika Karte -->
+    <div id="afrika" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23D2B48C\' width=\'1200\' height=\'800\'/><ellipse fill=\'%23A0522D\' cx=\'600\' cy=\'300\' rx=\'400\' ry=\'150\'/><ellipse fill=\'%238B4513\' cx=\'600\' cy=\'550\' rx=\'450\' ry=\'180\'/></svg>');">
+        <div class="map-overlay"></div>
+        <div class="map-header">
+            <button class="back-button" onclick="showWelcome()">← Zurück</button>
+            <h2 class="map-title-large">AFRIKA</h2>
+        </div>
+        
+        <div class="event-icon" style="top: 35%; left: 45%;" onclick="openModal('Serengeti', 'Safari in Tansania', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Serengeti+Safari')">🦁</div>
+        <div class="event-icon" style="top: 20%; left: 50%;" onclick="openModal('Pyramiden', 'Gizeh Pyramidenkomplex', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Pyramiden+Gizeh')">🔺</div>
+        <div class="event-icon" style="top: 60%; left: 40%;" onclick="openModal('Kilimanjaro', 'Afrikas höchster Berg', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Kilimanjaro')">🏔️</div>
+    </div>
+    
+    <!-- Amerika Karte -->
+    <div id="amerika" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23DEB887\' width=\'1200\' height=\'800\'/><path fill=\'%23A0522D\' d=\'M50 150 Q200 100 350 150 Q500 200 650 150 Q800 100 950 150 L1000 350 Q850 400 700 350 Q550 300 400 350 Q250 400 100 350 Z\'/><path fill=\'%238B4513\' d=\'M100 450 Q250 400 400 450 Q550 500 700 450 Q850 400 1000 450 L1050 650 Q900 700 750 650 Q600 600 450 650 Q300 700 150 650 Z\'/></svg>');">
+        <div class="map-overlay"></div>
+        <div class="map-header">
+            <button class="back-button" onclick="showWelcome()">← Zurück</button>
+            <h2 class="map-title-large">AMERIKA</h2>
+        </div>
+        
+        <div class="event-icon" style="top: 30%; left: 25%;" onclick="openModal('Grand Canyon', 'Naturwunder in Arizona', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Grand+Canyon')">🏜️</div>
+        <div class="event-icon" style="top: 50%; left: 70%;" onclick="openModal('Machu Picchu', 'Inka-Ruinen in Peru', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Machu+Picchu')">🏛️</div>
+        <div class="event-icon" style="top: 40%; left: 45%;" onclick="openModal('Yellowstone', 'Erster Nationalpark der Welt', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Yellowstone')">🌋</div>
+    </div>
+    
+    <!-- Ozeanien Karte -->
+    <div id="ozeanien" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23ADD8E6\' width=\'1200\' height=\'800\'/><circle fill=\'%23D2B48C\' cx=\'300\' cy=\'200\' r=\'80\'/><circle fill=\'%23DEB887\' cx=\'600\' cy=\'350\' r=\'120\'/><circle fill=\'%23D2B48C\' cx=\'900\' cy=\'250\' r=\'60\'/><circle fill=\'%23DEB887\' cx=\'200\' cy=\'500\' r=\'70\'/><circle fill=\'%23D2B48C\' cx=\'800\' cy=\'550\' r=\'90\'/></svg>');">
+        <div class="map-overlay"></div>
+        <div class="map-header">
+            <button class="back-button" onclick="showWelcome()">← Zurück</button>
+            <h2 class="map-title-large">OZEANIEN</h2>
+        </div>
+        
+        <div class="event-icon" style="top: 35%; left: 50%;" onclick="openModal('Great Barrier Reef', 'Weltgrößtes Korallenriff', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Great+Barrier+Reef')">🐠</div>
+        <div class="event-icon" style="top: 25%; left: 30%;" onclick="openModal('Bora Bora', 'Paradies in Französisch-Polynesien', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Bora+Bora')">🏝️</div>
+        <div class="event-icon" style="top: 55%; left: 80%;" onclick="openModal('Milford Sound', 'Fjord in Neuseeland', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Milford+Sound')">⛵</div>
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modal-title"></h3>
+            <img id="modal-image" src="" alt="" style="display: none;">
+            <video id="modal-video" controls style="display: none;">
+                <source src="" type="video/mp4">
+            </video>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+    
+    <script>
+        function showMap(mapId) {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById(mapId).style.display = 'block';
+        }
+        
+        function showWelcome() {
+            const maps = ['europa', 'asien', 'afrika', 'amerika', 'ozeanien'];
+            maps.forEach(map => {
+                document.getElementById(map).style.display = 'none';
+            });
+            document.getElementById('welcome').style.display = 'flex';
+        }
+        
+        function openModal(title, description, mediaUrl) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = description;
+            
+            // Für Demo-Zwecke zeigen wir Placeholder-Bilder
+            // In der echten Version würdest du hier deine eigenen Bilder/Videos einsetzen
+            if (mediaUrl.includes('.mp4') || mediaUrl.includes('.webm')) {
+                document.getElementById('modal-video').style.display = 'block';
+                document.getElementById('modal-video').src = mediaUrl;
+                document.getElementById('modal-image').style.display = 'none';
+            } else {
+                document.getElementById('modal-image').style.display = 'block';
+                document.getElementById('modal-image').src = mediaUrl;
+                document.getElementById('modal-video').style.display = 'none';
+            }
+            
+            document.getElementById('modal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal-video').pause();
+        }
+        
+        // Modal schließen wenn außerhalb geklickt wird
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Escape-Taste um Modal zu schließen
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
