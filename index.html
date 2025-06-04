@@ -478,5 +478,47 @@
             }
         });
     </script>
+    <script>
+    function showMap(mapId) {
+        // Alle Kartenansichten und die Willkommensseite ausblenden
+        document.querySelectorAll('.map-view, .welcome-page').forEach(el => el.style.display = 'none');
+        // Gewählte Karte anzeigen
+        document.getElementById(mapId).style.display = 'block';
+    }
+
+    function showWelcome() {
+        // Alle Kartenansichten ausblenden
+        document.querySelectorAll('.map-view').forEach(el => el.style.display = 'none');
+        // Willkommensseite anzeigen
+        document.getElementById('welcome').style.display = 'flex';
+    }
+
+    function openModal(title, description, mediaUrl) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.style.display = 'block';
+
+        const ext = mediaUrl.split('.').pop().toLowerCase();
+        const isVideo = ['mp4', 'webm', 'ogg'].includes(ext);
+
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
+                <h3>${title}</h3>
+                ${isVideo ? `<video src="${mediaUrl}" controls></video>` : `<img src="${mediaUrl}" alt="${title}">`}
+                <p>${description}</p>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    // Optional: ESC-Taste schließt das Modal
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            const modal = document.querySelector('.modal');
+            if (modal) modal.remove();
+        }
+    });
+    </script>
 </body>
 </html>
