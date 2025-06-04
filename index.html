@@ -314,9 +314,9 @@
         <p class="subtitle">Entdecke die Welt durch vergessene Karten</p>
         
         <div class="maps-grid">
-            <div class="map-card" onclick="showMap('europa')">
+            <div class="map-card" onclick="showMap('Anno 1800')">
                 <span class="map-icon">🏰</span>
-                <h3 class="map-title">Europa</h3>
+                <h3 class="map-title">Anno 1800</h3>
                 <p class="map-description">Burgen, Schlösser und mittelalterliche Abenteuer</p>
             </div>
             
@@ -351,7 +351,7 @@
         <div class="map-overlay"></div>
         <div class="map-header">
             <button class="back-button" onclick="showWelcome()">← Zurück</button>
-            <h2 class="map-title-large">EUROPA</h2>
+            <h2 class="map-title-large">ANNO 1800</h2>
         </div>
         
         <div class="event-icon" style="top: 25%; left: 30%;" onclick="openModal('Flammenwerfer', 'Märchenschloss in Bayern', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Neuschwanstein+Schloss')">🏰</div>
@@ -432,7 +432,7 @@
         }
         
         function showWelcome() {
-            const maps = ['europa', 'asien', 'afrika', 'amerika', 'ozeanien'];
+            const maps = ['Anno 1800', 'asien', 'afrika', 'amerika', 'ozeanien'];
             maps.forEach(map => {
                 document.getElementById(map).style.display = 'none';
             });
