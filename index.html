@@ -320,9 +320,9 @@
                 <p class="map-description">Burgen, Schlösser und mittelalterliche Abenteuer</p>
             </div>
             
-            <div class="map-card" onclick="showMap('asien')">
+            <div class="map-card" onclick="showMap('uni_graz')">
                 <span class="map-icon">🏔️</span>
-                <h3 class="map-title">Asien</h3>
+                <h3 class="map-title">Uni Graz</h3>
                 <p class="map-description">Mystische Tempel und hohe Gipfel</p>
             </div>
             
@@ -359,12 +359,12 @@
         <div class="event-icon" style="top: 35%; left: 20%;" onclick="openModal('Tower Bridge', 'Londons berühmte Brücke', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Tower+Bridge')">🌉</div>
     </div>
     
-    <!-- Asien Karte -->
-    <div id="Uni Graz" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23DEB887\' width=\'1200\' height=\'800\'/><polygon fill=\'%23A0522D\' points=\'200,100 400,80 600,120 800,90 1000,110 1100,300 900,350 700,320 500,340 300,330\'/><polygon fill=\'%238B4513\' points=\'150,450 350,430 550,460 750,440 950,450 1050,650 850,680 650,660 450,670 250,665\'/></svg>');">
+    <!-- Asien / Uni-Graz Karte -->
+    <div id="uni_graz" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23DEB887\' width=\'1200\' height=\'800\'/><polygon fill=\'%23A0522D\' points=\'200,100 400,80 600,120 800,90 1000,110 1100,300 900,350 700,320 500,340 300,330\'/><polygon fill=\'%238B4513\' points=\'150,450 350,430 550,460 750,440 950,450 1050,650 850,680 650,660 450,670 250,665\'/></svg>');">
         <div class="map-overlay"></div>
         <div class="map-header">
             <button class="back-button" onclick="showWelcome()">← Zurück</button>
-            <h2 class="map-title-large">ASIEN</h2>
+            <h2 class="map-title-large">Uni Graz</h2>
         </div>
         
         <div class="event-icon" style="top: 30%; left: 40%;" onclick="openModal('Papierflieger', 'Der höchste Berg der Welt', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Mount+Everest')">⛰️</div>
@@ -432,7 +432,7 @@
         }
         
         function showWelcome() {
-            const maps = ['anno1800', 'asien', 'afrika', 'amerika', 'ozeanien'];
+            const maps = ['anno1800', 'uni_graz', 'afrika', 'amerika', 'ozeanien'];
             maps.forEach(map => {
                 document.getElementById(map).style.display = 'none';
             });
