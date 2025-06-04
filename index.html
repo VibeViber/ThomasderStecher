@@ -314,7 +314,7 @@
         <p class="subtitle">Entdecke die Welt durch vergessene Karten</p>
         
         <div class="maps-grid">
-            <div class="map-card" onclick="showMap('Anno 1800')">
+            <div class="map-card" onclick="showMap('anno1800')">
                 <span class="map-icon">🏰</span>
                 <h3 class="map-title">Anno 1800</h3>
                 <p class="map-description">Burgen, Schlösser und mittelalterliche Abenteuer</p>
@@ -347,7 +347,7 @@
     </div>
     
     <!-- Europa Karte -->
-    <div id="Anno 1800" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23D2B48C\' width=\'1200\' height=\'800\'/><path fill=\'%23A0522D\' d=\'M100 200 Q300 150 500 200 T900 180 L1000 300 Q800 350 600 320 T200 340 Z\'/><path fill=\'%238B4513\' d=\'M200 400 Q400 380 600 400 T1000 420 L1100 600 Q900 650 700 620 T300 640 Z\'/></svg>');">
+    <div id="anno1800" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23D2B48C\' width=\'1200\' height=\'800\'/><path fill=\'%23A0522D\' d=\'M100 200 Q300 150 500 200 T900 180 L1000 300 Q800 350 600 320 T200 340 Z\'/><path fill=\'%238B4513\' d=\'M200 400 Q400 380 600 400 T1000 420 L1100 600 Q900 650 700 620 T300 640 Z\'/></svg>');">
         <div class="map-overlay"></div>
         <div class="map-header">
             <button class="back-button" onclick="showWelcome()">← Zurück</button>
@@ -432,7 +432,7 @@
         }
         
         function showWelcome() {
-            const maps = ['Anno 1800', 'asien', 'afrika', 'amerika', 'ozeanien'];
+            const maps = ['anno1800', 'asien', 'afrika', 'amerika', 'ozeanien'];
             maps.forEach(map => {
                 document.getElementById(map).style.display = 'none';
             });
