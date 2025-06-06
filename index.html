@@ -18,6 +18,7 @@
             background: linear-gradient(145deg, #8B4513, #A0522D, #CD853F);
             min-height: 100vh;
             color: #2F1B14;
+            padding-bottom: 100px;
         }
         
         /* Willkommensseite */
@@ -132,8 +133,10 @@
         /* Kartenansicht */
         .map-view {
             display: none;
-            min-height: 100vh;
+            min-height: calc(100vh - 100px);
             position: relative;
+            padding: 2rem 1rem 6rem 1rem;
+            padding-bottom: 100px;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -362,7 +365,7 @@
     <!-- Asien / Uni-Graz Karte -->
     <div id="uni_graz" class="map-view" style="background-image: url('https://github.com/VibeViber/ThomasderStecher/blob/main/images/Screenshot%202025-06-06%20212937.png?raw=true');">
         <div class="map-overlay"></div>
-        <div class="map-header">
+        <div class="map-header" style="margin-bottom: 2rem;">
             <button class="back-button" onclick="showWelcome()">← Zurück</button>
             <h2 class="map-title-large">Uni Graz</h2>
         </div>
