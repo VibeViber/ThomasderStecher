@@ -145,12 +145,6 @@
             overflow-x: hidden;
             transition: all 0.3s ease;
         }
-        /* Inaktive Kartenansicht wird abgedunkelt und unbenutzbar */
-        .map-view:not(.active-map) {
-            opacity: 0.3;
-            pointer-events: none;
-            filter: blur(2px);
-        }
         
         /* Aktive Kartenansicht sichtbar und interaktiv */
         .map-view.active-map {
@@ -392,7 +386,7 @@
     </div>
     
     <!-- Asien / Uni-Graz Karte -->
-    <div id="uni_graz" class="map-view">Karte Uni Graz< style="background-image: url('https://github.com/VibeViber/ThomasderStecher/blob/main/images/Screenshot%202025-06-06%20212937.png?raw=true');">
+    <div id="uni_graz" class="map-view" style="background-image: url('https://github.com/VibeViber/ThomasderStecher/blob/main/images/Screenshot%202025-06-06%20212937.png?raw=true');">
         <div class="map-header" style="margin-bottom: 2rem;">
             <h1 class="map-title-large">Uni Graz</h1>
             <button class="back-button" onclick="showWelcome()">← Zurück</button>
@@ -510,39 +504,6 @@
             }
         });
     </script>
-    <script>
-    function showMap(mapId) {
-        // Alle Kartenansichten und die Willkommensseite ausblenden
-        document.querySelectorAll('.map-view, .welcome-page').forEach(el => el.style.display = 'none');
-        // Gewählte Karte anzeigen
-        document.getElementById(mapId).style.display = 'block';
-    }
-
-    function showWelcome() {
-        // Alle Kartenansichten ausblenden
-        document.querySelectorAll('.map-view').forEach(el => el.style.display = 'none');
-        // Willkommensseite anzeigen
-        document.getElementById('welcome').style.display = 'flex';
-    }
-
-    function openModal(title, description, mediaUrl) {
-        const modal = document.createElement('div');
-        modal.classList.add('modal');
-        modal.style.display = 'block';
-
-        const ext = mediaUrl.split('.').pop().toLowerCase();
-        const isVideo = ['mp4', 'webm', 'ogg'].includes(ext);
-
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
-                <h3>${title}</h3>
-                ${isVideo ? `<video src="${mediaUrl}" controls></video>` : `<img src="${mediaUrl}" alt="${title}">`}
-                <p>${description}</p>
-            </div>
-        `;
-        document.body.appendChild(modal);
-    }
 
     // Optional: ESC-Taste schließt das Modal
     document.addEventListener('keydown', function(event) {
