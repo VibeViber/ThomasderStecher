@@ -271,6 +271,8 @@
             padding: 2rem;
             width: 90%;
             max-width: 800px;
+            max-height: 80vh; /* begrenzt die Höhe */
+            overflow-y: auto;  /* ermöglicht vertikales Scrollen */
             background: linear-gradient(145deg, #8B4513, #A0522D);
             border: 3px solid #D2B48C;
             border-radius: 15px;
@@ -341,7 +343,45 @@
         
             .map-view {
                 background-attachment: scroll;
-    }
+            }
+            
+            .carousel-container {
+                  width: 100%;
+                  overflow: hidden;
+                  margin: 2rem auto;
+                  position: relative;
+                  max-width: 100%;
+                  height: 220px; /* Höhe der Bilder + etwas Puffer */
+                }
+                
+                .carousel-track {
+                  display: flex;
+                  gap: 2rem;
+                  animation: scrollCarousel 30s linear infinite;
+                  align-items: center;
+                }
+                
+                .carousel-track img {
+                  height: 200px;
+                  flex-shrink: 0;
+                  border-radius: 12px;
+                  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                  transition: transform 0.3s ease;
+                }
+                
+                .carousel-track img:hover {
+                  transform: scale(1.05);
+                }
+                
+                /* Animations-Keyframes */
+                @keyframes scrollCarousel {
+                  0% {
+                    transform: translateX(0);
+                  }
+                  100% {
+                    transform: translateX(-50%);
+                  }
+            }
 }
 
     </style>
@@ -426,10 +466,19 @@
             <h2 class="map-title-large">AFRIKA</h2>
         </div>
         
-        <div class="event-icon" style="top: 35%; left: 45%;" onclick="openModal('Serengeti', 'Safari in Tansania', 'https://via.placeholder.com/600x400/8B4513/F4E4BC?text=Serengeti+Safari')">🦁</div>
-        <div class="event-icon" style="top: 20%; left: 50%;" onclick="openModal('Pyramiden', 'Gizeh Pyramidenkomplex', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Pyramiden+Gizeh')">🔺</div>
-        <div class="event-icon" style="top: 60%; left: 40%;" onclick="openModal('Kilimanjaro', 'Afrikas höchster Berg', 'https://via.placeholder.com/600x400/CD853F/F4E4BC?text=Kilimanjaro')">🏔️</div>
-    </div>
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/thomas_karte.jpg?raw=true" alt="Bild 1">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/thomas_labor.jpg?raw=true" alt="Bild 2">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/usi_surf.jpg?raw=true" alt="Bild 3">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/vorklinik.jpg?raw=true" alt="Bild 4">
+        <!-- Die Bilder werden doppelt eingefügt für den Loop -->
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/thomas_karte.jpg?raw=true" alt="Bild 1 Kopie">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/thomas_labor.jpg?raw=true" alt="Bild 2 Kopie">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/usi_surf.jpg?raw=true" alt="Bild 3 Kopie">
+        <img src="https://github.com/VibeViber/ThomasderStecher/blob/main/images/vorklinik.jpg?raw=true" alt="Bild 4 Kopie">
+      </div>
+</div>
     
     <!-- Amerika Karte -->
     <div id="amerika" class="map-view" style="background-image: url('data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'><rect fill=\'%23DEB887\' width=\'1200\' height=\'800\'/><path fill=\'%23A0522D\' d=\'M50 150 Q200 100 350 150 Q500 200 650 150 Q800 100 950 150 L1000 350 Q850 400 700 350 Q550 300 400 350 Q250 400 100 350 Z\'/><path fill=\'%238B4513\' d=\'M100 450 Q250 400 400 450 Q550 500 700 450 Q850 400 1000 450 L1050 650 Q900 700 750 650 Q600 600 450 650 Q300 700 150 650 Z\'/></svg>');">
