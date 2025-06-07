@@ -410,7 +410,7 @@
         <div class="event-icon" style="top: 76%; left: 18%;" onclick="openModal('Schlossberg', 'Gizeh Pyramidenkomplex', 'https://github.com/VibeViber/ThomasderStecher/blob/main/images/schlossberg_wald.jpg?raw=true')">🔺</div>
         <div class="event-icon" style="top: 43%; left: 9%;" onclick="openModal('Thomas', 'Gizeh Pyramidenkomplex', 'https://via.placeholder.com/600x400/A0522D/F4E4BC?text=Pyramiden+Gizeh')">🔺</div>
         <div class="event-icon" style="top: 33%; left: 59%;" onclick="openModal('ZMB', 'Gizeh Pyramidenkomplex', 'https://github.com/VibeViber/ThomasderStecher/blob/main/images/biochemietutor.jpg?raw=true')">🔺</div>
-        <div class="event-icon" style="top: 88%; left: 89%;" onclick="openModal('Hannah', 'Tempelkomplex in Kambodscha', [
+        <div class="event-icon" style="top: 88%; left: 89%;" onclick="openModal('Hannah', 'Der Sonne hinterher', [
             'https://github.com/VibeViber/ThomasderStecher/blob/main/images/hannah1.jpg?raw=true', 
             'https://github.com/VibeViber/ThomasderStecher/blob/main/images/hannah2.jpg?raw=true', 
             'https://github.com/VibeViber/ThomasderStecher/blob/main/images/hannah_polaroid.jpg?raw=true'
@@ -486,45 +486,82 @@
         window.scrollTo(0, 0);
         }
         
-        function openModal(title, description, mediaUrl) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-description').textContent = description;
-            
-            // Für Demo-Zwecke zeigen wir Placeholder-Bilder
-            // In der echten Version würdest du hier deine eigenen Bilder/Videos einsetzen
-            if (mediaUrl.includes('.mp4') || mediaUrl.includes('.webm')) {
-                document.getElementById('modal-video').style.display = 'block';
-                document.getElementById('modal-video').src = mediaUrl;
-                document.getElementById('modal-image').style.display = 'none';
+        function openModal(title, description, mediaUrls) {
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalImage = document.getElementById('modal-image');
+        const modalVideo = document.getElementById('modal-video');
+    
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+    
+        // Vorherige Medien entfernen (falls vorhanden)
+        const oldMedia = document.getElementById('modal-media');
+        if (oldMedia) oldMedia.remove();
+    
+        // Container für dynamische Medien
+        const contentArea = document.createElement('div');
+        contentArea.id = "modal-media";
+        contentArea.style.display = "flex";
+        contentArea.style.flexDirection = "column";
+        contentArea.style.gap = "1rem";
+        contentArea.style.alignItems = "center";
+    
+        // Wenn nur ein URL-String übergeben wurde → in Array umwandeln
+        const urls = Array.isArray(mediaUrls) ? mediaUrls : [mediaUrls];
+    
+        urls.forEach(url => {
+            const ext = url.split('.').pop().toLowerCase();
+            if (['mp4', 'webm', 'ogg'].includes(ext)) {
+                const vid = document.createElement('video');
+                vid.src = url;
+                vid.controls = true;
+                vid.style.maxWidth = "100%";
+                vid.style.maxHeight = "400px";
+                vid.style.borderRadius = "10px";
+                contentArea.appendChild(vid);
             } else {
-                document.getElementById('modal-image').style.display = 'block';
-                document.getElementById('modal-image').src = mediaUrl;
-                document.getElementById('modal-video').style.display = 'none';
-            }
-            
-            document.getElementById('modal').style.display = 'block';
+                const img = document.createElement('img');
+                img.src = url;
+                img.style.maxWidth = "100%";
+                img.style.maxHeight = "400px";
+                img.style.borderRadius = "10px";
+                contentArea.appendChild(img);
         }
-        
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('modal-video').pause();
-        }
-        
-        // Modal schließen wenn außerhalb geklickt wird
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-        
-        // Escape-Taste um Modal zu schließen
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
-    </script>
+    });
+
+    modal.querySelector('.modal-content').appendChild(contentArea);
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+
+    const video = document.getElementById('modal-video');
+    if (video) video.pause();
+
+    const oldMedia = document.getElementById('modal-media');
+    if (oldMedia) oldMedia.remove();
+}
+
+// Modal schließen bei Klick außerhalb
+window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// ESC-Taste schließt Modal
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
+
 
     // Optional: ESC-Taste schließt das Modal
     document.addEventListener('keydown', function(event) {
